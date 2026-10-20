@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+import json
 import os
 import uuid
 from email.message import EmailMessage
@@ -13,11 +14,11 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from langchain_core.tools import tool
 
-from .architecture import architecture_state
+from architecture import architecture_state
 
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.modify"]
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parent
 CREDENTIALS_FILE = ROOT / "credentials.json"
 TOKEN_FILE = ROOT / "token.json"
 
@@ -38,7 +39,10 @@ def get_gmail_service():
     )
 
     creds = None
-    if TOKEN_FILE.exists():
+    token_json = os.getenv("GMAIL_TOKEN_JSON")
+    if token_json:
+        creds = Credentials.from_authorized_user_info(json.loads(token_json), SCOPES)
+    elif TOKEN_FILE.exists():
         creds = Credentials.from_authorized_user_file(str(TOKEN_FILE), SCOPES)
 
     if not creds or not creds.valid:

@@ -1,19 +1,29 @@
 from __future__ import annotations
 
+import os
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from .agent_service import clear_conversation, run_chat
-from .architecture import architecture_state
-from .gmail_service import approve_draft, cancel_draft, list_drafts
+from agent_service import clear_conversation, run_chat
+from architecture import architecture_state
+from gmail_service import approve_draft, cancel_draft, list_drafts
 
 
 app = FastAPI(title="Gmail AI Agent Web App")
 
+allowed_origins = [
+    origin.strip().rstrip("/")
+    for origin in os.getenv(
+        "FRONTEND_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173"
+    ).split(",")
+    if origin.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

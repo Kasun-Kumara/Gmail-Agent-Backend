@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+langchain
+langchain-community
+langchain-core
+langchain-groq
+duckduckgo-search
+ddgs
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib

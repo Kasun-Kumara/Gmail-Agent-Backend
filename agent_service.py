@@ -10,8 +10,8 @@ from ddgs import DDGS
 from langchain_core.tools import tool
 from langchain_groq import ChatGroq
 
-from .architecture import architecture_state
-from .gmail_service import (
+from architecture import architecture_state
+from gmail_service import (
     create_pending_email,
     list_drafts,
     read_email,
@@ -19,10 +19,10 @@ from .gmail_service import (
     search_emails,
     send_email,
 )
-from .prompts import SYSTEM_PROMPT
+from prompts import SYSTEM_PROMPT
 
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(ROOT, ".env"))
 
 _agent = None
